@@ -4,18 +4,20 @@
 #include <time.h>
 #include "info.h"
 
-void printNames(race[]);
+void printChar(void);
 int statsRoll(void);
-void printArray(int[]);
+void raceBonus(void);
 
 int ac, hp, prof, passPerception; 
 int stats[6], savThrows[6], skills[18], cash[5];
-char charName[100];
+char charName[] = "Blaze Dankstorm";
 race charRace;
 
 int main(void) {
 	//printNames(races);
 	srand(time(NULL));
+	
+	//Assigning a race
 	charRace = races[rand()%9];
 	
 	//Rolling stats
@@ -23,8 +25,9 @@ int main(void) {
 	for(i=0;i<6;i++){
 		stats[i] = statsRoll();
 	}	
+	raceBonus();
 	
-	printArray(stats);
+	printChar();
 	
 	return 0;
 }
@@ -55,20 +58,55 @@ int statsRoll(void){
 	return total;
 }
 
-//Debugging stuff
-void printNames(race races[]){
-	int i;
-	
-	for(i=0;i<9;i++){
-		printf("%s\n",races[i].name);	
+//Adding race bonuses (not sub-races)
+void raceBonus(void){
+	switch(charRace){
+		case "Dragonborn" :
+			stats[0] += 2;
+			stats[5] += 1;
+			break;
+		case "Dwarf" :
+			stats[2] += 2;
+			break;
+		case "Elf" :
+			stats[1] += 2;
+			break;
+		case "Gnome" :
+			stats[3] += 2;
+			break;
+		case "Half-elf" :
+			stats[5] += 2;
+			break;
+		case "Half-orc" :
+			stats[0] += 2;
+			stats[2] += 1;
+			break;
+		case "Halfling" :
+			stats[1] += 2;
+			break;
+		case "Human" :
+			//Hopefully this increases all stats by 1
+			int i;
+			for(i=0;i<6;i++){
+				stats[i]++;
+			}
+			break;
+		case "Tiefling" :
+			stats[3] += 1;
+			stats[5] += 2;
+			break;
 	}
-	
 }
 
-void printArray(int intArray[]){
-	int i;
+//Debugging stuff
+void printChar(void){
+	printf("%s\n\n",charName);
 	
-	for(i=0;i<6;i++){
-		printf("%d\n",intArray[i]);
-	}
+	printf("%s\n", charRace);
+	printf("Str: %d\n", stats[0]);
+	printf("Dex: %d\n", stats[1]);
+	printf("Con: %d\n", stats[2]);
+	printf("Int: %d\n", stats[3]);
+	printf("Wis: %d\n", stats[4]);
+	printf("Cha: %d\n", stats[5]);
 }
